@@ -12,7 +12,7 @@ namespace Solution
         private InputAction moveAction;
         private InputAction fireAction;
 
-        public bool isAutoMoving = false; // Flag to control auto-movement
+        public bool isAutoMoving = false; 
 
         public override void SetUP()
         {
@@ -26,7 +26,6 @@ namespace Solution
 
         public void Update()
         {
-            // Manual input is only processed if not in auto-move mode
             if (isAutoMoving)
             {
                 return;
@@ -71,14 +70,14 @@ namespace Solution
             base.Move(direction);
             mapGenerator.MoveEnemies();
             // Save the state AFTER the move
-      
+            actionHistoryManager.SaveStateForUndo(new Vector2(positionX, positionY));
         }
 
         public void UseFireStorm()
         {
-            if (inventory.HasItem("FireStorm",1))
+            if (inventory.HasItem("FireStorm", 1))
             {
-                inventory.UseItem("FireStorm",1);
+                inventory.UseItem("FireStorm", 1);
                 OOPEnemy[] enemies = UtilitySortEnemies.SortEnemiesByRemainningEnergy1(mapGenerator);
                 int count = 3;
                 if (count > enemies.Length)
@@ -95,7 +94,7 @@ namespace Solution
                 Debug.Log("No FireStorm in inventory");
             }
         }
-        
+
         public void Attack(OOPEnemy _enemy)
         {
             _enemy.TakeDamage(AttackPoint);
